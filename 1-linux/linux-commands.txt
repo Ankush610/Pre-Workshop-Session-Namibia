@@ -1,0 +1,235 @@
+LINUX BASICS - LIVE DEMO COMMANDS (in slide order)
+===================================================
+Run top to bottom from a fresh terminal. Everything happens in your home folder (~).
+Format:   command
+            -> what it does
+Lines marked [FLOW FIX] are NOT on the slides; they are added so the next step works.
+
+
+========== Slide 6: Clicking vs typing ==========
+
+cd ~
+  -> [FLOW FIX] start in your home folder so every path below works
+mkdir photos
+  -> make a new folder called photos
+
+
+========== Slide 7: How to read a command ==========
+
+ls -l /home
+  -> ls = command, -l = option (long list), /home = argument (which folder)
+cp -r photos backup
+  -> copy the photos folder (and everything inside, -r) to a new folder backup
+ls
+  -> list files here; you should see photos and backup
+
+
+========== Slide 8: One big folder tree ==========
+
+ls /
+  -> list the root folder; shows home, etc, var, bin, tmp ...
+ls /etc
+  -> peek inside /etc where settings and config files live
+
+
+========== Slide 9: Paths ==========
+
+pwd
+  -> print where I am now (my home folder)
+cd /
+  -> go to the root of the tree (absolute path)
+pwd
+  -> now shows /
+cd ~
+  -> ~ is a shortcut for my home folder
+cd .
+  -> . means "this folder", so nothing changes
+pwd
+  -> still in home
+
+
+========== Slide 10: Moving around ==========
+
+mkdir -p Documents
+  -> [FLOW FIX] make sure a Documents folder exists (-p = no error if it already does)
+pwd
+  -> show which folder I'm in
+ls
+  -> list files in this folder
+ls -l
+  -> list with details: permissions, size, date
+ls -a
+  -> also show hidden files (names starting with a dot, like .bashrc)
+cd Documents
+  -> go into the Documents folder (relative path)
+pwd
+  -> confirms /home/<you>/Documents
+cd ..
+  -> go up one folder, back to home
+cd Documents
+  -> go into Documents again
+cd ~
+  -> jump straight back home from anywhere
+cd Documents
+  -> go in once more
+cd
+  -> plain cd with nothing after it also takes you home
+pwd
+  -> confirms we are home
+
+
+========== Slide 11: Files and folders ==========
+
+mkdir notes
+  -> make a new folder called notes
+cd notes
+  -> go into notes
+touch todo.txt
+  -> create an empty file called todo.txt
+cp todo.txt copy.txt
+  -> copy todo.txt to a new file copy.txt
+ls
+  -> shows copy.txt and todo.txt
+mv copy.txt old.txt
+  -> rename copy.txt to old.txt (mv = move or rename)
+ls
+  -> shows old.txt and todo.txt
+rm old.txt
+  -> delete old.txt for good (no Recycle Bin!)
+ls
+  -> only todo.txt is left
+cd ..
+  -> [FLOW FIX] go back home; slide 13's find output expects us to be in home
+
+
+========== Slide 12: Reading files ==========
+
+printf "apple\nbanana\ncherry\nmango\n" > fruits.txt
+  -> [FLOW FIX] create fruits.txt with 4 lines (the slides use it but never create it)
+cat fruits.txt
+  -> show the whole file at once
+less fruits.txt
+  -> open the file to scroll page by page; press q to quit
+head fruits.txt
+  -> show the first 10 lines (whole file here, it only has 4)
+tail fruits.txt
+  -> show the last 10 lines
+head -n 2 fruits.txt
+  -> show only the first 2 lines: apple, banana
+tail -n 1 fruits.txt
+  -> show only the last line: mango
+tail -f fruits.txt
+  -> keep watching the file for new lines; press Ctrl+C to stop
+     (optional: in a 2nd terminal run  echo "grape" >> ~/fruits.txt  and watch it appear)
+
+
+========== Slide 13: Searching - grep and find ==========
+
+grep "banana" fruits.txt
+  -> print lines inside fruits.txt that contain "banana"
+grep -i "APPLE" fruits.txt
+  -> same, but -i ignores upper/lower case, so it finds "apple"
+grep -r "banana" .
+  -> -r searches every file in this folder and its subfolders
+find . -name "*.txt"
+  -> find all files ending in .txt from here down (* matches anything)
+find ~ -name "todo*"
+  -> find files starting with "todo" anywhere in my home folder
+
+
+========== Slide 14: System info ==========
+
+whoami
+  -> print my user name
+hostname
+  -> print the name of this computer
+date
+  -> print the current date and time
+uname -a
+  -> print system and kernel details
+df -h
+  -> show disk space used and free (-h = sizes in G/M)
+free -h
+  -> show memory (RAM) used and free
+
+
+========== Slide 15: Network basics ==========
+
+ping google.com
+  -> check if google.com is reachable; runs forever, press Ctrl+C to stop
+ping -c 2 google.com
+  -> same, but stop by itself after 2 replies
+ip a
+  -> show my network interfaces and IP address
+curl https://example.com
+  -> fetch a web page and print it on screen
+curl -O https://www.gnu.org/licenses/gpl-3.0.txt
+  -> fetch the file and SAVE it with its own name (gpl-3.0.txt)
+wget https://gnu.org/licenses/gpl.txt
+  -> download the file and save it as gpl.txt
+ls
+  -> see the two downloaded files: gpl-3.0.txt and gpl.txt
+
+
+========== Slide 16: Handy helpers and shortcuts ==========
+
+echo "Hi"
+  -> print text on the screen
+clear
+  -> clean the screen (Ctrl+L does the same)
+history
+  -> list the commands you typed before
+cat fru
+  -> type this and press Tab: it auto-completes to fruits.txt
+  -> press Up / Down arrows: bring back previous commands
+ping google.com
+  -> start a never-ending command, then press Ctrl+C to stop it
+
+
+========== Slide 17: Getting help and staying safe ==========
+
+man ls
+  -> open the full manual for ls; press q to quit
+ls --help
+  -> print a short summary of the options for ls
+sudo whoami
+  -> run whoami as administrator; asks your password and prints "root"
+
+
+========== Slide 18-20: Vim ==========
+
+vim hello.txt
+  -> open (or create) hello.txt in vim; it starts in Normal mode
+     i                         -> enter Insert mode, "-- INSERT --" shows at the bottom
+     Hello Linux!              -> type your text
+     This is my first file.
+     Esc                       -> back to Normal mode
+     :wq  then Enter           -> save and quit
+cat hello.txt
+  -> check that the text was saved
+
+vim hello.txt
+  -> open it again to show the other save/quit options
+     i, type  More text, Esc   -> make a change
+     :w  then Enter            -> save, but stay in vim
+     :q  then Enter            -> quit (works because everything is saved)
+vim hello.txt
+  -> open one more time
+     i, type  JUNK, Esc        -> make a mess
+     :q!  then Enter           -> quit WITHOUT saving
+cat hello.txt
+  -> JUNK is not there, it was thrown away
+
+
+========== Quiz 6 demo + cleanup ==========
+
+rm notes
+  -> fails with "Is a directory": plain rm can't delete folders
+rm -r notes
+  -> -r deletes the folder and everything inside it (no undo!)
+rm -r photos backup
+  -> delete the other demo folders
+rm fruits.txt hello.txt gpl-3.0.txt gpl.txt
+  -> delete the demo files
+ls
+  -> back to how it was at the start (plus Documents)
